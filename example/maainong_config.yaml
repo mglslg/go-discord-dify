@@ -1,0 +1,12 @@
+guildId: 1084356913816412190
+applicationId: 1092088932088418384
+botName: Maainong
+
+#################
+#difyToken: xxxx
+#botToken: xxxx
+#clearCmd: clear chat history
+#clearCmdDesc: Clear the conversation context with ${botName}.
+#clearDelimiter: (The chat history between you and the robot has been cleared.)
+#freeChatLimit: 50
+#onAt: true
