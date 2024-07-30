@@ -3,9 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"github.com/mglslg/go-discord-gpt/cmd/g"
-	"github.com/mglslg/go-discord-gpt/cmd/g/ds"
-	"github.com/mglslg/go-discord-gpt/cmd/openaisdk"
+	"github.com/mglslg/go-discord-dify/cmd/g"
+	"github.com/mglslg/go-discord-dify/cmd/g/ds"
 	"regexp"
 	"time"
 )
@@ -81,6 +80,8 @@ func reply(s *discordgo.Session, m *discordgo.MessageCreate, us *ds.UserSession)
 		for _, mentioned := range m.Mentions {
 			if mentioned.ID == ctx.BotId {
 				//todo 使用dify接口实现
+
+				replayContent := apisdk.Chat()
 
 				//allMsg, e := fetchMessagesByCount(s, us.ChannelID, ctx.MaxUserRecord)
 				//if e != nil {

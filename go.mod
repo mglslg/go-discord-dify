@@ -1,4 +1,4 @@
-module github.com/mglslg/go-discord-gpt
+module github.com/mglslg/go-discord-dify
 
 go 1.18
 
