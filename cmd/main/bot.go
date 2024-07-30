@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"github.com/mglslg/go-discord-dify/cmd/difysdk"
 	"github.com/mglslg/go-discord-dify/cmd/g"
 	"github.com/mglslg/go-discord-dify/cmd/g/ds"
 	"regexp"
@@ -81,20 +82,24 @@ func reply(s *discordgo.Session, m *discordgo.MessageCreate, us *ds.UserSession)
 			if mentioned.ID == ctx.BotId {
 				//todo 使用dify接口实现
 
-				replayContent := apisdk.Chat()
+				replayContent, conversationId, e := difysdk.Chat(getCleanMsg(m.Content), us.UserName, us.ConversationID)
+
+				if us.ConversationID == "" {
+					us.ConversationID = conversationId
+				}
 
 				//allMsg, e := fetchMessagesByCount(s, us.ChannelID, ctx.MaxUserRecord)
-				//if e != nil {
-				//	logger.Fatal("抓取聊天记录失败", e)
-				//}
-				//
+				if e != nil {
+					logger.Fatal("failed to request dify api", e)
+				}
+
 				////获取聊天上下文
 				//conversation := geMentionContext(allMsg, us)
 				//
 				////异步获取响应结果并提示[正在输入],go关键字后是生产端,asyncResponse中的select是消费端
-				//respChannel := make(chan string)
-				//go callOpenAIChat(conversation, us, respChannel)
-				//asyncResponse(s, m, us, respChannel)
+				respChannel := make(chan string)
+				go callOpenAIChat(conversation, us, respChannel)
+				asyncResponse(s, m, us, respChannel)
 
 				return
 			}
@@ -274,17 +279,17 @@ func getLatestMessage(messages []*discordgo.Message) *ds.Stack {
 //	}
 //}
 
-func fullChatStrategy(messages []ds.ChatMessage, us *ds.UserSession) (resp string) {
-	logger.Println("================", us.UserName, ":", us.UserChannelID, "================")
-	for _, m := range messages {
-		logger.Println(m.Role, ":", getCleanMsg(m.Content))
-	}
-	logger.Println("================================")
-
-	result, _ := openaisdk.Chat(messages)
-
-	return result
-}
+//func fullChatStrategy(messages []ds.ChatMessage, us *ds.UserSession) (resp string) {
+//	logger.Println("================", us.UserName, ":", us.UserChannelID, "================")
+//	for _, m := range messages {
+//		logger.Println(m.Role, ":", getCleanMsg(m.Content))
+//	}
+//	logger.Println("================================")
+//
+//	result, _ := openaisdk.Chat(messages)
+//
+//	return result
+//}
 
 //func abstractChatStrategy(messages []ds.ChatMessage, us *ds.UserSession) (resp string) {
 //	//处理数组越界问题

@@ -3,8 +3,8 @@ package difysdk
 import (
 	"bytes"
 	"encoding/json"
-	ds "github.com/mglslg/go-discord-gpt/cmd/difysdk/ds"
-	"github.com/mglslg/go-discord-gpt/cmd/g"
+	ds "github.com/mglslg/go-discord-dify/cmd/difysdk/ds"
+	"github.com/mglslg/go-discord-dify/cmd/g"
 	"io/ioutil"
 	"net/http"
 )

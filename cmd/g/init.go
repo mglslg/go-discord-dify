@@ -2,7 +2,7 @@ package g
 
 import (
 	"fmt"
-	"github.com/mglslg/go-discord-gpt/cmd/g/ds"
+	"github.com/mglslg/go-discord-dify/cmd/g/ds"
 	"gopkg.in/yaml.v3"
 	"io"
 	"log"

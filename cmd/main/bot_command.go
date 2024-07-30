@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"github.com/mglslg/go-discord-gpt/cmd/g"
-	"github.com/mglslg/go-discord-gpt/cmd/g/ds"
+	"github.com/mglslg/go-discord-dify/cmd/g"
+	"github.com/mglslg/go-discord-dify/cmd/g/ds"
 )
 
 func onCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
