@@ -1,7 +1,5 @@
 package ds
 
-import "time"
-
 type ChatCompletionResponse struct {
 	Event          string `json:"event"`
 	MessageID      string `json:"message_id"`
@@ -34,5 +32,5 @@ type ChatCompletionResponse struct {
 			Content      string  `json:"content"`
 		} `json:"retriever_resources"`
 	} `json:"metadata"`
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt int `json:"created_at"`
 }

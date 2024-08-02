@@ -1,5 +1,5 @@
-LogFilePath: ../go_discord_dify_logs
-clearCmd: clear chat history
+logFilePath: ../go_discord_dify_logs
+clearCmd: clear_chat_history
 clearCmdDesc: Clear the conversation context with ${botName}.
 clearDelimiter: (The chat history between you and the robot has been cleared.)
 freeChatLimit: -1
