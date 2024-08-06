@@ -92,7 +92,7 @@ func InitSecretConfig() {
 	}
 
 	if AppContext.DifyToken != "" {
-		SecToken.Discord = AppContext.DifyToken
+		SecToken.Dify = AppContext.DifyToken
 	} else {
 		SecToken.Dify = os.Getenv("DIFY_TOKEN")
 	}
