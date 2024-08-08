@@ -79,7 +79,10 @@ func onMsgCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 // Contextual reply without AT
 func simpleReply(s *discordgo.Session, m *discordgo.MessageCreate, us *ds.UserSession) {
-	//todo
+	respChannel := make(chan string)
+	go callDifyChat(m.Content, us, respChannel)
+	asyncResponse(s, m, us, respChannel)
+	return
 }
 
 // Contextual reply that requires AT
@@ -87,7 +90,7 @@ func reply(s *discordgo.Session, m *discordgo.MessageCreate, us *ds.UserSession)
 	if m.Mentions != nil {
 		for _, mentioned := range m.Mentions {
 			if mentioned.ID == ctx.BotId {
-				////异步获取响应结果并提示[正在输入],go关键字后是生产端,asyncResponse中的select是消费端
+				//异步获取响应结果并提示[正在输入],go关键字后是生产端,asyncResponse中的select是消费端
 				respChannel := make(chan string)
 				go callDifyChat(m.Content, us, respChannel)
 				asyncResponse(s, m, us, respChannel)
