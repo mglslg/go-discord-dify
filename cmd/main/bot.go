@@ -69,6 +69,7 @@ func onMsgCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	g.Logger.Println("******************************************************OnMessage******************************************************")
 	g.Logger.Println("OnAt:", ctx.OnAt)
+	g.Logger.Println("Content:", m.Content)
 
 	if ctx.OnAt {
 		reply(s, m, us)
