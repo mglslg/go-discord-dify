@@ -3,10 +3,13 @@ package difysdk
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	ds "github.com/mglslg/go-discord-dify/cmd/difysdk/ds"
 	"github.com/mglslg/go-discord-dify/cmd/g"
 	"io"
+	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 func Chat(msg string, userName string, conversationId string) (string, string, error) {
@@ -25,8 +28,6 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 
 	body, err := json.Marshal(chatRequestBody)
 
-	g.Logger.Println("request dify :", body)
-
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
 	if err != nil {
 		g.Logger.Println("Error creating request:", err)
@@ -42,6 +43,9 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 		g.Logger.Println("Error sending request", err)
 		return "[Error sending request:" + err.Error() + "]", "", nil
 	}
+
+	curlCommand := httpRequestToCurl(req)
+	g.Logger.Println(curlCommand)
 
 	if resp.StatusCode != 200 {
 		return resp.Status, "", nil
@@ -116,4 +120,32 @@ func DeleteConversation(conversationId string, userName string) (string, error) 
 	g.Logger.Println(">>>>>delete response:", response)
 
 	return response.Result, nil
+}
+
+func httpRequestToCurl(req *http.Request) string {
+	command := []string{"curl"}
+
+	// Add method
+	command = append(command, "-X", req.Method)
+
+	// Add headers
+	for name, values := range req.Header {
+		for _, value := range values {
+			command = append(command, "-H", fmt.Sprintf("'%s: %s'", name, value))
+		}
+	}
+
+	// Add body
+	if req.Body != nil {
+		bodyBytes, _ := ioutil.ReadAll(req.Body)
+		req.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes)) // Reset the body for future reads
+		if len(bodyBytes) > 0 {
+			command = append(command, "-d", fmt.Sprintf("'%s'", string(bodyBytes)))
+		}
+	}
+
+	// Add URL
+	command = append(command, fmt.Sprintf("'%s'", req.URL.String()))
+
+	return strings.Join(command, " ")
 }
