@@ -25,6 +25,8 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 
 	body, err := json.Marshal(chatRequestBody)
 
+	g.Logger.Println("request dify :", body)
+
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
 	if err != nil {
 		g.Logger.Println("Error creating request:", err)
