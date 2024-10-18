@@ -12,8 +12,6 @@ import (
 )
 
 func Chat(msg string, userName string, conversationId string) (string, string, error) {
-	g.Logger.Println("SlgDebug:", msg)
-
 	url := "https://dify.hogwartscoder.com/v1/chat-messages"
 
 	chatRequestBody := ds.ChatRequestBody{
@@ -63,7 +61,7 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 		return "[Error reading response:" + err.Error() + "]", "", nil
 	}
 	if resp.StatusCode != 200 {
-		return "statsCode:" + resp.Status + "\nrespBody:" + string(responseBody), "", nil
+		return "statsCode: " + resp.Status + "\nrespBody: " + string(responseBody), "", nil
 	}
 
 	chatResponse := ds.ChatCompletionResponse{}
