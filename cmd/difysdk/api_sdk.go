@@ -45,6 +45,11 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 		return "[Error sending request:" + err.Error() + "]", "", nil
 	}
 
+	// generate curl command
+	req.Body = io.NopCloser(bytes.NewBuffer(body))
+	curlCommand := httpRequestToCurl(req)
+	g.Logger.Println("curl: ", curlCommand)
+
 	if resp.StatusCode != 200 {
 		return resp.Status, "", nil
 	}
@@ -55,11 +60,6 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 			g.Logger.Println("Error closing response body", err)
 		}
 	}(resp.Body)
-
-	// generate curl command
-	req.Body = io.NopCloser(bytes.NewBuffer(body))
-	curlCommand := httpRequestToCurl(req)
-	g.Logger.Println("curl: ", curlCommand)
 
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
