@@ -56,6 +56,11 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 		}
 	}(resp.Body)
 
+	// generate curl command
+	req.Body = io.NopCloser(bytes.NewBuffer(body))
+	curlCommand := httpRequestToCurl(req)
+	g.Logger.Println("curl: ", curlCommand)
+
 	responseBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		g.Logger.Println("Error reading response", err)
@@ -69,11 +74,6 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 		return "[Error unmarshalling response:" + err.Error() + "]", "", nil
 	}
 	g.Logger.Println(">>>>>chat response:", chatResponse.Answer)
-
-	// generate curl command
-	req.Body = io.NopCloser(bytes.NewBuffer(body))
-	curlCommand := httpRequestToCurl(req)
-	g.Logger.Println("curl: ", curlCommand)
 
 	return chatResponse.Answer, chatResponse.ConversationID, nil
 }
