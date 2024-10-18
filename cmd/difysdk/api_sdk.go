@@ -63,7 +63,7 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 		return "[Error reading response:" + err.Error() + "]", "", nil
 	}
 	if resp.StatusCode != 200 {
-		return "statsCode:" + resp.Status + ",respBody:" + string(responseBody), "", nil
+		return "statsCode:" + resp.Status + "\nrespBody:" + string(responseBody), "", nil
 	}
 
 	chatResponse := ds.ChatCompletionResponse{}
