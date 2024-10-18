@@ -45,9 +45,6 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 		return "[Error sending request:" + err.Error() + "]", "", nil
 	}
 
-	curlCommand := httpRequestToCurl(req)
-	g.Logger.Println(curlCommand)
-
 	if resp.StatusCode != 200 {
 		return resp.Status, "", nil
 	}
@@ -72,6 +69,11 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 		return "[Error unmarshalling response:" + err.Error() + "]", "", nil
 	}
 	g.Logger.Println(">>>>>chat response:", chatResponse.Answer)
+
+	// generate curl command
+	req.Body = io.NopCloser(bytes.NewBuffer(body))
+	curlCommand := httpRequestToCurl(req)
+	g.Logger.Println("curl: ", curlCommand)
 
 	return chatResponse.Answer, chatResponse.ConversationID, nil
 }
