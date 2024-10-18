@@ -147,6 +147,7 @@ func getCleanMsg(content string) string {
 }
 
 func callDifyChat(msg string, us *ds.UserSession, resultChannel chan string) {
+	g.Logger.Println("SlgDebug:", msg)
 	replayContent, conversationId, e := difysdk.Chat(getCleanMsg(msg), us.UserName, us.ConversationID)
 
 	if us.ConversationID == "" {
