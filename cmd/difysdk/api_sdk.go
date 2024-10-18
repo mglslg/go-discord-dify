@@ -50,10 +50,6 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 	curlCommand := httpRequestToCurl(req)
 	g.Logger.Println("curl: ", curlCommand)
 
-	if resp.StatusCode != 200 {
-		return resp.Status, "", nil
-	}
-
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
@@ -65,6 +61,9 @@ func Chat(msg string, userName string, conversationId string) (string, string, e
 	if err != nil {
 		g.Logger.Println("Error reading response", err)
 		return "[Error reading response:" + err.Error() + "]", "", nil
+	}
+	if resp.StatusCode != 200 {
+		return "statsCode:" + resp.Status + ",respBody:" + string(responseBody), "", nil
 	}
 
 	chatResponse := ds.ChatCompletionResponse{}
