@@ -7,12 +7,13 @@ import (
 	ds "github.com/mglslg/go-discord-dify/cmd/difysdk/ds"
 	"github.com/mglslg/go-discord-dify/cmd/g"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
 func Chat(msg string, userName string, conversationId string) (string, string, error) {
+	g.Logger.Println("SlgDebug:", msg)
+
 	url := "https://dify.hogwartscoder.com/v1/chat-messages"
 
 	chatRequestBody := ds.ChatRequestBody{
@@ -137,8 +138,8 @@ func httpRequestToCurl(req *http.Request) string {
 
 	// Add body
 	if req.Body != nil {
-		bodyBytes, _ := ioutil.ReadAll(req.Body)
-		req.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes)) // Reset the body for future reads
+		bodyBytes, _ := io.ReadAll(req.Body)
+		req.Body = io.NopCloser(bytes.NewBuffer(bodyBytes)) // Reset the body for future reads
 		if len(bodyBytes) > 0 {
 			command = append(command, "-d", fmt.Sprintf("'%s'", string(bodyBytes)))
 		}
